@@ -29,7 +29,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 ## Video Walkthrough
 
-![](iyelp.userscreen.gif)
+![](yelp_userscreen.gif)
 
 ## Notes
 
