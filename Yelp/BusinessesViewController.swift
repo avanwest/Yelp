@@ -8,13 +8,16 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    var businesses: [Business]!
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,  UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var navBar: UINavigationItem!
+    
+    
+    var businesses: [Business]!
+    var searchBar: UISearchBar!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +25,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.estimatedRowHeight = 120
+        tableView.estimatedRowHeight = 120
+        
         searchBar = UISearchBar()
         navigationItem.titleView = searchBar
-    
+        searchBar.sizeToFit()
+        searchBar.delegate = self
         
-        
-        
-        
+
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
                 self.businesses = businesses
@@ -44,21 +47,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             }
         )
         
-        /* Example of Yelp search with more search options specified
-         Business.searchWithTerm(term: "Restaurants", sort: .distance, categories: ["asianfusion", "burgers"]) { (businesses, error) in
-                self.businesses = businesses
-                 for business in self.businesses {
-                     print(business.name!)
-                     print(business.address!)
-                 }
-         }
-         */
-        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -77,9 +69,27 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         return cell
     }
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text?.count == 0 {}
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+    }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Business.searchWithTerm(term: searchBar.text!) { (businesses:[Business]?, error: Error?) in
+            self.businesses = businesses
+            self.tableView.reloadData()
+            searchBar.setShowsCancelButton(false, animated: true)
+            searchBar.endEditing(true)
+        }
+        
+    }
     
+
     /*
      // MARK: - Navigation
      
