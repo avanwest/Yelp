@@ -1,6 +1,6 @@
 # *Yelp*
 
-Recreated the famous search app Yelp using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
+Recreated the famous search app Yelp for iOS using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
 ![](yelp_userscreen.gif)
 
